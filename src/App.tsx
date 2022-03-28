@@ -5,7 +5,7 @@ import logo from "./logo.svg";
 function App() {
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:5000/api");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api`);
       const body = await response.json();
       console.log(body);
     })();
