@@ -25,7 +25,7 @@ export const AuthProvider: React.FC = (props) => {
 
   const fetchUser = useCallback(async (): Promise<void> => {
     try {
-      const res = (await request("/")) as Message;
+      await request("/");
       setUser(true);
     } catch (err) {
       console.log(err);
@@ -77,6 +77,7 @@ export const AuthProvider: React.FC = (props) => {
       body: { previousSessionId },
     });
     setPreviousSessionId(undefined);
+    setLoading(false);
   };
 
   const request = async <B, R>(

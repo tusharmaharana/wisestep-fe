@@ -2,25 +2,22 @@ import styled from "@emotion/styled";
 import React, { SyntheticEvent, useState } from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../widgets/Loader";
 
 const VerifyLogin = () => {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
-  const { actions } = useAuth();
+  const { state, actions } = useAuth();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     try {
       setError("");
-      setLoading(true);
       actions?.verifyLogin(+input);
     } catch (error) {
       setError("Failed to Verify Login");
     }
-
-    setLoading(false);
   };
 
   const handleOnChange = (e: SyntheticEvent) => {
@@ -50,8 +47,13 @@ const VerifyLogin = () => {
                 onChange={(e) => handleOnChange(e)}
               />
             </Form.Group>
-            <Button disabled={loading} className="w-100 mb-2" type="submit">
+            <Button
+              disabled={state?.loading}
+              className="w-100 mb-2"
+              type="submit"
+            >
               Verify
+              {state?.loading ? <Loader type="small" /> : null}
             </Button>
           </Form>
         </Card.Body>

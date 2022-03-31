@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import React, { SyntheticEvent, useRef, useState } from "react";
-import { Alert, Button, Card, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../widgets/Loader";
 import VerifyLogin from "./VerifyLogin";
 
 const Login = () => {
@@ -44,9 +45,7 @@ const Login = () => {
               type="submit"
             >
               Login
-              {state?.loading ? (
-                <Spinner animation="border" variant="light" size="sm" />
-              ) : null}
+              {state?.loading ? <Loader type="small" /> : null}
             </Button>
           </Form>
         </Card.Body>

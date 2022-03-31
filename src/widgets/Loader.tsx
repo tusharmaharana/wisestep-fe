@@ -1,12 +1,22 @@
-import styled from '@emotion/styled';
-import React from 'react';
-import { Spinner } from 'react-bootstrap';
+import styled from "@emotion/styled";
+import React from "react";
+import { Spinner } from "react-bootstrap";
 
-const Loader: React.FC = () => {
+interface LoaderProps {
+  type: "full" | "small";
+}
+
+const Loader = ({ type }: LoaderProps) => {
   return (
-    <StyleSpinner animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </StyleSpinner>
+    <>
+      {type === "full" ? (
+        <StyleSpinner animation="border" role="status" variant="light">
+          <span className="visually-hidden">Loading...</span>
+        </StyleSpinner>
+      ) : (
+        <Spinner animation="border" variant="light" size="sm" />
+      )}
+    </>
   );
 };
 

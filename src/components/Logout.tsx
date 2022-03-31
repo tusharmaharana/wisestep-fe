@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../widgets/Loader";
 import LogoutPreviousSession from "./LogoutPreviousSession";
 
 const Logout = () => {
@@ -46,7 +47,7 @@ const Logout = () => {
           )}
         </>
       ) : (
-        <div>Loading</div>
+        <Loader type="full" />
       )}
     </>
   );
