@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
 import React, { SyntheticEvent, useState } from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
 
 const VerifyLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
+  const { actions } = useAuth();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -13,7 +15,7 @@ const VerifyLogin = () => {
     try {
       setError("");
       setLoading(true);
-      // submission logic
+      actions?.verifyLogin(+input);
     } catch (error) {
       setError("Failed to Verify Login");
     }

@@ -1,10 +1,22 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Button, Card } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
+import LogoutPreviousSession from "./LogoutPreviousSession";
 
 const Logout = () => {
   const [loading, setLoading] = useState(false);
-  return (
+
+  const { state, actions } = useAuth();
+
+  const handleOnClick = () => {
+    setLoading(true);
+    actions?.logout().then(() => {
+      setLoading(false);
+    });
+  };
+
+  const LogoutCurrentSession = () => (
     <StyledContainer>
       <StyledCard>
         <Card.Body>
@@ -14,12 +26,29 @@ const Logout = () => {
             disabled={loading}
             className="w-100 mb-2"
             type="submit"
+            onClick={handleOnClick}
           >
             Logout
           </Button>
         </Card.Body>
       </StyledCard>
     </StyledContainer>
+  );
+
+  return (
+    <>
+      {!state?.loading ? (
+        <>
+          {!state?.previousSessionId ? (
+            <LogoutCurrentSession />
+          ) : (
+            <LogoutPreviousSession />
+          )}
+        </>
+      ) : (
+        <div>Loading</div>
+      )}
+    </>
   );
 };
 

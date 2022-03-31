@@ -1,27 +1,28 @@
 import styled from "@emotion/styled";
 import React, { SyntheticEvent, useRef, useState } from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
+import { Alert, Button, Card, Form, Spinner } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
+import VerifyLogin from "./VerifyLogin";
 
 const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const { state, actions } = useAuth();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     try {
       setError("");
-      setLoading(true);
-      const email = emailRef.current?.value;
+      const email = emailRef.current?.value as string;
+      actions?.login(email);
     } catch (error) {
       setError("Failed to create an account");
     }
-
-    setLoading(false);
   };
 
-  return (
+  const EmailLogin = () => (
     <StyledContainer>
       <h4 className="text-center mb-4">Login to Wisestep-Project</h4>
       <StyledCard>
@@ -37,14 +38,23 @@ const Login = () => {
                 className="p-2"
               />
             </Form.Group>
-            <Button disabled={loading} className="w-100 mb-2" type="submit">
+            <Button
+              disabled={state?.loading}
+              className="w-100 mb-2"
+              type="submit"
+            >
               Login
+              {state?.loading ? (
+                <Spinner animation="border" variant="light" size="sm" />
+              ) : null}
             </Button>
           </Form>
         </Card.Body>
       </StyledCard>
     </StyledContainer>
   );
+
+  return <>{!state?.token ? <EmailLogin /> : <VerifyLogin />}</>;
 };
 
 export default Login;

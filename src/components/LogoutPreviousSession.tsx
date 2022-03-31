@@ -1,19 +1,34 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Alert, Button, Card } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
 
 const LogoutPreviousSession = () => {
   const [loading, setLoading] = useState(false);
+
+  const { actions } = useAuth();
+
+  const handleOnClick = () => {
+    setLoading(true);
+    actions?.logoutPreviousSession().then(() => {
+      setLoading(false);
+    });
+  };
+
   return (
     <StyledContainer>
       <StyledCard>
         <Card.Body>
-          <Alert variant="warning">This email is already logged in <br /> Logout from previous session to continue</Alert>
+          <Alert variant="warning">
+            This email is already logged in <br /> Logout from previous session
+            to continue
+          </Alert>
           <Button
             variant="danger"
             disabled={loading}
             className="w-100 mb-2"
             type="submit"
+            onClick={handleOnClick}
           >
             Logout Previous Session
           </Button>
