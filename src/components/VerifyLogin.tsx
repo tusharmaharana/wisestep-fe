@@ -5,19 +5,19 @@ import { useAuth } from "../context/AuthContext";
 import Loader from "../widgets/Loader";
 
 const VerifyLogin = () => {
-  const [error, setError] = useState("");
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const { state, actions } = useAuth();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
-      setError("");
       actions?.verifyLogin(+input);
     } catch (error) {
-      setError("Failed to Verify Login");
+      console.log(error);
     }
+    setLoading(false);
   };
 
   const handleOnChange = (e: SyntheticEvent) => {
@@ -34,7 +34,9 @@ const VerifyLogin = () => {
       </h4>
       <StyledCard>
         <Card.Body>
-          {error && <Alert variant="danger">{error}</Alert>}
+          {state?.errorMessage.length ? (
+            <Alert variant="danger">{state?.errorMessage}</Alert>
+          ) : null}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="my-4">
               <Form.Label>4-digit Code</Form.Label>
@@ -47,13 +49,9 @@ const VerifyLogin = () => {
                 onChange={(e) => handleOnChange(e)}
               />
             </Form.Group>
-            <Button
-              disabled={state?.loading}
-              className="w-100 mb-2"
-              type="submit"
-            >
+            <Button disabled={loading} className="w-100 mb-2" type="submit">
               Verify
-              {state?.loading ? <Loader type="small" /> : null}
+              {loading ? <Loader type="small" /> : null}
             </Button>
           </Form>
         </Card.Body>

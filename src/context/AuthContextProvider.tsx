@@ -19,6 +19,7 @@ export const AuthProvider: React.FC = (props) => {
   const [previousSessionId, setPreviousSessionId] = useState<
     string | undefined
   >(undefined);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const client = new ClientJS();
   const fingerPrint = client.getFingerprint();
@@ -35,6 +36,7 @@ export const AuthProvider: React.FC = (props) => {
   }, []);
 
   useEffect(() => {
+    setErrorMessage("");
     fetchUser();
   }, [fetchUser, user]);
 
@@ -57,10 +59,12 @@ export const AuthProvider: React.FC = (props) => {
         body: { pin, token },
       });
       setUser(true);
+      setErrorMessage("");
     } catch (error) {
       console.log(error);
-      console.log("nhi hua verify");
       setUser(false);
+      //@ts-ignore
+      setErrorMessage(error.message);
     }
   };
 
@@ -113,7 +117,7 @@ export const AuthProvider: React.FC = (props) => {
   };
 
   const values: AuthContextType = {
-    state: { user, token, previousSessionId, loading },
+    state: { user, token, previousSessionId, loading, errorMessage },
     actions: {
       login,
       logout,

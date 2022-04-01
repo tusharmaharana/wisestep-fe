@@ -14,7 +14,12 @@ const Loader = ({ type }: LoaderProps) => {
           <span className="visually-hidden">Loading...</span>
         </StyleSpinner>
       ) : (
-        <Spinner animation="border" variant="light" size="sm" />
+        <Spinner
+          animation="border"
+          variant="light"
+          size="sm"
+          className="ml-2"
+        />
       )}
     </>
   );

@@ -12,6 +12,7 @@ interface State {
   token: string | undefined | null;
   previousSessionId: string | undefined;
   loading: boolean;
+  errorMessage: string;
 }
 
 interface Actions {
