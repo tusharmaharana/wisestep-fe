@@ -26,7 +26,8 @@ export const AuthProvider: React.FC = (props) => {
 
   const fetchUser = useCallback(async (): Promise<void> => {
     try {
-      await request("/");
+      const tokenId = localStorage.getItem("token");
+      await request("/", { body: { token: tokenId } });
       setUser(true);
     } catch (err) {
       console.log(err);
@@ -58,10 +59,12 @@ export const AuthProvider: React.FC = (props) => {
       await request("/auth/login/verify", {
         body: { pin, token },
       });
+      localStorage.setItem("token", token);
       setUser(true);
       setErrorMessage("");
     } catch (error) {
       console.log(error);
+      localStorage.clear();
       setUser(false);
       //@ts-ignore
       setErrorMessage(error.message);
@@ -70,15 +73,18 @@ export const AuthProvider: React.FC = (props) => {
 
   const logout = async (): Promise<void> => {
     setLoading(true);
-    await request("/auth/logout/current-session");
+    const tokenId = localStorage.getItem("token");
+    await request("/auth/logout/current-session", { body: { token: tokenId } });
     setToken(null);
+    localStorage.clear();
     setUser(false);
   };
 
   const logoutPreviousSession = async (): Promise<void> => {
     setLoading(true);
+    const tokenId = localStorage.getItem("token");
     await request("/auth/logout/previous-session", {
-      body: { previousSessionId },
+      body: { previousSessionId, token: tokenId },
     });
     setPreviousSessionId(undefined);
     setLoading(false);
