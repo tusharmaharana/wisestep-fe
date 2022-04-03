@@ -59,7 +59,7 @@ export const AuthProvider: React.FC = (props) => {
       await request("/auth/login/verify", {
         body: { pin, token },
       });
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", token as string);
       setUser(true);
       setErrorMessage("");
     } catch (error) {
